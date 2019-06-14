@@ -33,7 +33,8 @@ defmodule Accountable.MixProject do
       {:guardian, "~> 1.0"},
       {:ecto_sql, "~> 3.0", only: :test},
       {:postgrex, ">= 0.0.0", only: :test},
-      {:ex_machina, "~> 2.3", only: :test}
+      {:ex_machina, "~> 2.3", only: :test},
+      {:absinthe_plug, "~> 1.4"}
     ]
   end
 
