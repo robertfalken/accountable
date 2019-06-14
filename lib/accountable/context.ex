@@ -1,4 +1,4 @@
-defmodule Accountable.CurrentUser do
+defmodule Accountable.Context do
   @behaviour Plug
   import Plug.Conn
 
