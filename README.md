@@ -1,6 +1,8 @@
 # Accountable
 
-**TODO: Add description**
+An Elixir package to deal with a lot of the account related boilerplate such as creating users, authenticating, authorizing and such. All so you can get to the juicy parts faster, hacking on your domain logic.
+
+My goal is to keep `Accountable` as modular as possible, so that you can get up and running in no time, and piece by piece replacing parts with your own implementations as your application grows more complicated.
 
 ## Installation
 
