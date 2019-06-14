@@ -9,7 +9,8 @@ defmodule Accountable.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      aliases: aliases()
+      aliases: aliases(),
+      package: package()
     ]
   end
 
@@ -42,5 +43,15 @@ defmodule Accountable.MixProject do
     [
       "ecto.reset": ["ecto.drop", "ecto.create", "ecto.migrate"]
     ]
+  end
+
+  defp package do
+    %{
+      maintainers: ["Robert Falkén"],
+      licences: ["MIT"],
+      links: %{
+        github: "https://github.com/robertfalken/accountable"
+      }
+    }
   end
 end
