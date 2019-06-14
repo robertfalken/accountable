@@ -9,3 +9,10 @@ config :accountable, Accountable.TestRepo,
 
 config :accountable, ecto_repos: [Accountable.TestRepo]
 
+config :argon2_elixir,
+  t_cost: 1,
+  m_cost: 8
+
+config :accountable, Accountable.Guardian,
+  issuer: "accountable",
+  secret_key: "secret"

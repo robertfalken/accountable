@@ -15,14 +15,8 @@ defmodule Accountable.User do
 
   @doc false
   def changeset(user, attrs) do
-    # attrs = put_password_hash(attrs)
-
     user
     |> cast(attrs, [:email, :password_hash])
     |> validate_required([:email, :password_hash])
-  end
-
-  def put_password_hash(attrs) do
-    # Accountable.put_password_hash(attrs)
   end
 end
