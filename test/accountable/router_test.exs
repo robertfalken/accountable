@@ -54,7 +54,23 @@ defmodule Accountable.Plugs.RouterTest do
         |> Router.call([])
 
       assert conn.status == 401
-      assert conn.resp_cookies["AccessToken"] == nil
+      assert fetch_cookies(conn).cookies["AccessToken"] == nil
+    end
+  end
+
+  describe "/logout" do
+    test "clears access token" do
+      params = %{email: "me@example.com", password: "pass"} |> hashed_password()
+      user = insert(:user, params)
+      {:ok, token} = Accountable.token_for_user(user)
+
+      conn =
+        conn(:post, "/logout", %{})
+        |> put_req_cookie("AccessToken", token)
+        |> Router.call([])
+
+      assert conn.status == 204
+      assert fetch_cookies(conn).cookies["AccessToken"] == nil
     end
   end
 end

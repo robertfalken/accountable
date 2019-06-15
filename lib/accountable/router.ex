@@ -5,13 +5,7 @@ defmodule Accountable.Router do
   plug(:match)
   plug(:dispatch)
 
-  post "/authenticate" do
-    conn
-    |> Controller.call(:authenticate)
-  end
-
-  post "/refresh" do
-    conn
-    |> Controller.call(:refresh)
-  end
+  post("/authenticate", do: Controller.call(conn, :authenticate))
+  post("/refresh", do: Controller.call(conn, :refresh))
+  post("/logout", do: Controller.call(conn, :logout))
 end

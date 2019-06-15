@@ -25,8 +25,16 @@ defmodule Accountable.Controller do
       |> send_resp(:no_content, "")
     else
       _ ->
-        send_error_response(conn)
+        conn
+        |> delete_resp_cookie("AccessToken")
+        |> send_error_response()
     end
+  end
+
+  def call(conn, :logout) do
+    conn
+    |> delete_resp_cookie("AccessToken")
+    |> send_resp(204, "")
   end
 
   defp send_error_response(conn) do
