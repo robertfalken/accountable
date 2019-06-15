@@ -4,13 +4,14 @@ defmodule Accountable.MixProject do
   def project do
     [
       app: :accountable,
-      version: "0.1.0",
+      version: "0.1.1",
       elixir: "~> 1.8",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       aliases: aliases(),
-      package: package()
+      package: package(),
+      dialyzer: dialyzer()
     ]
   end
 
@@ -32,6 +33,7 @@ defmodule Accountable.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:poison, "~> 3.1"},
       {:guardian, "~> 1.0"},
+      {:dialyxir, "~> 0.4", only: :test},
       {:ecto_sql, "~> 3.0", only: :test},
       {:postgrex, ">= 0.0.0", only: :test},
       {:ex_machina, "~> 2.3", only: :test},
@@ -54,5 +56,9 @@ defmodule Accountable.MixProject do
         github: "https://github.com/robertfalken/accountable"
       }
     }
+  end
+
+  defp dialyzer do
+    [plt_add_apps: [:ex_unit]]
   end
 end

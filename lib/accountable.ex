@@ -26,7 +26,7 @@ defmodule Accountable do
     @user_schema.changeset(@user_schema.__struct__, attributes)
   end
 
-  @spec token_for_user(struct, String.t()) :: {:ok, String.t(), %{}} | {:error, String.t()}
+  @spec token_for_user(struct, String.t()) :: {atom, String.t()}
   def token_for_user(user, type \\ "access") do
     with true <- Enum.member?(@supported_tokens, type),
          {:ok, token, _claims} <- Accountable.Guardian.encode_and_sign(user, %{typ: type}) do
