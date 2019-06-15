@@ -23,3 +23,4 @@ erl_crash.dump
 accountable-*.tar
 
 .elixir_ls
+.envrc
