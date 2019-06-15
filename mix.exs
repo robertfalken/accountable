@@ -35,7 +35,7 @@ defmodule Accountable.MixProject do
       {:ecto_sql, "~> 3.0", only: :test},
       {:postgrex, ">= 0.0.0", only: :test},
       {:ex_machina, "~> 2.3", only: :test},
-      {:absinthe_plug, "~> 1.4"}
+      {:absinthe_plug, "~> 1.4", only: :test}
     ]
   end
 
@@ -47,8 +47,9 @@ defmodule Accountable.MixProject do
 
   defp package do
     %{
+      description: "User accounts boilerplate.",
       maintainers: ["Robert Falkén"],
-      licences: ["MIT"],
+      licenses: ["MIT"],
       links: %{
         github: "https://github.com/robertfalken/accountable"
       }
