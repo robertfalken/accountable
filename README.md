@@ -24,6 +24,8 @@ be found at [https://hexdocs.pm/accountable](https://hexdocs.pm/accountable).
 
 ### Quickstart guide
 
+**Caveat:** For this to work (for now at least), you will need to have a `users` table in your database, with `email` and `password_hash` columns.
+
 #### Config
 
 First of all, you will need to tell Accountable what repo to use to fetch your users.
