@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/robertfalken/accountable.svg?style=svg)](https://circleci.com/gh/robertfalken/accountable)
+
 # Accountable
 
 An Elixir package to deal with a lot of the account related boilerplate such as creating users, authenticating, authorizing and such. All so you can get to the juicy parts faster, hacking on your domain logic.
