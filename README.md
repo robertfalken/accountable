@@ -25,12 +25,29 @@ be found at [https://hexdocs.pm/accountable](https://hexdocs.pm/accountable).
 
 ### Quickstart guide
 
-Accountable comes with a router that handles some basic requests, and also a `Context` plug that will assign `current_user` for you. To enable all of it, just add these lines to your `router.ex`.
+#### Config
+
+First of all, you will need to tell Accountable what repo to use to fetch your users.
+
+Since Accountable is using the fantastic [Guardian](https://github.com/ueberauth/guardian) for authentication, you also need to provide a Guardian secret. Throw this into your config:
+
 
 ```elixir
+# config.ex
+config :accountable, :ecto_repo, MyApp.Repo
+
+config :accountable, Accountable.Guardian,
+  issuer: "my-app",
+  secret_key: "guardian-secret"
+```
+
+Accountable comes with a router that handles some basic requests, and also a `Context` plug that will assign `current_user` for you. To enable all of it, just add these lines to your router:
+
+```elixir
+# router.ex
 forward "/authentication", Accountable.Router
-plug Accountable.Context
-plug Accountable.Context, absinthe: Absinthe.Plug
+plug Accountable.Context # Checks the access token header and puts current_user in your conn.assigns
+plug Accountable.Context, absinthe: Absinthe.Plug # Instead puts current_user in your Absinthe context
 ```
 
 The forward👆  will give you 2 endpoints.
