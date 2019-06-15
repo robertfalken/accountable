@@ -58,7 +58,8 @@ plug Accountable.Context, absinthe: Absinthe.Plug # Puts current_user in your Ab
 The forward👆  will give you 2 endpoints.
 
 - /authentication/authenticate
-- /authentication/refrest
+- /authentication/refresh
+- /authentication/logout
 
 `/authentication/authenticate` accepts a JSON payload with `email` and `password`. If authentication is successful it will set an access token in a http-only cookie and return 204. If authentication is unsuccessful it will return 401.
 
@@ -70,5 +71,7 @@ $ curl --request POST \
 ```
 
 
-`/authentication/refresh` checks the access token in the cookie and either returns a fresh token in the http-cookie, or returns 401 for invalid or expired tokens.
+`/authentication/refresh` checks the access token in cookies and either returns a fresh token in the http-cookie, or returns 401 and removes the access token from cookies for invalid or expired tokens.
+
+`/authentication/logout` clears the access token from cookies.
 
