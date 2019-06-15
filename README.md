@@ -6,8 +6,7 @@ My goal is to keep `Accountable` as modular as possible, so that you can get up 
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `accountable` to your list of dependencies in `mix.exs`:
+Accountable can be installed by adding `accountable` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
@@ -41,13 +40,15 @@ config :accountable, Accountable.Guardian,
   secret_key: "guardian-secret"
 ```
 
+#### Router
+
 Accountable comes with a router that handles some basic requests, and also a `Context` plug that will assign `current_user` for you. To enable all of it, just add these lines to your router:
 
 ```elixir
 # router.ex
 forward "/authentication", Accountable.Router
 plug Accountable.Context # Checks the access token header and puts current_user in your conn.assigns
-plug Accountable.Context, absinthe: Absinthe.Plug # Instead puts current_user in your Absinthe context
+plug Accountable.Context, absinthe: Absinthe.Plug # Puts current_user in your Absinthe context
 ```
 
 The forward👆  will give you 2 endpoints.
