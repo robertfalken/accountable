@@ -4,8 +4,8 @@ defmodule Accountable do
   """
 
   @supported_tokens ~w(access reset_password)
-  @repo Accountable.TestRepo
-  @user_schema Accountable.User
+  @repo Application.get_env(:accountable, :ecto_repo)
+  @user_schema Application.get_env(:accountable, :user_schema, Accountable.User)
 
   @spec user_by_credentials(String.t(), String.t()) :: {:ok, struct}
   def user_by_credentials(email, password) do
@@ -23,7 +23,7 @@ defmodule Accountable do
 
   defp user_changeset(attributes) do
     attributes = put_password_hash(attributes)
-    @user_schema.changeset(%@user_schema{}, attributes)
+    @user_schema.changeset(@user_schema.__struct__, attributes)
   end
 
   @spec token_for_user(struct, String.t()) :: {:ok, String.t(), %{}} | {:error, String.t()}

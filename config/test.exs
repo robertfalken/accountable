@@ -1,5 +1,7 @@
 use Mix.Config
 
+config :accountable, :ecto_repo, Accountable.TestRepo
+
 config :accountable, Accountable.TestRepo,
   username: "postgres",
   password: "postgres",
