@@ -9,11 +9,16 @@ defmodule Accountable do
 
   @spec user_by_credentials(String.t(), String.t()) :: {:ok, struct}
   def user_by_credentials(email, password) do
-    user = @repo.get_by!(@user_schema, email: email)
-    Argon2.check_pass(user, password)
+    case @repo.get_by!(@user_schema, email: email) do
+      %{password_hash: nil} ->
+        {:error, "Authentication disabled"}
+
+      user ->
+        Argon2.check_pass(user, password)
+    end
   end
 
-  def user_by_id(id), do: @repo.get!(@user_schema, id)
+  def user_by_id(id), do: @repo.get(@user_schema, id)
 
   def create_user(attributes) do
     attributes
@@ -48,7 +53,9 @@ defmodule Accountable do
     end
   end
 
-  defp put_password_hash(%{password: password} = attrs) do
+  def put_password_hash(%{password: password} = attrs) do
     Map.merge(attrs, Argon2.add_hash(password))
   end
+
+  def put_password_hash(attrs), do: attrs
 end

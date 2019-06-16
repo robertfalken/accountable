@@ -23,11 +23,16 @@ defmodule AccountableTest do
   end
 
   describe "user_by_id/1" do
-    test "get user by id" do
+    test "return user" do
       user = insert(:user, hashed_password(@user_attributes))
       user_id = user.id
 
       assert %User{id: ^user_id} = Accountable.user_by_id(user_id)
+    end
+
+    test "nil with missing user" do
+      id = Ecto.UUID.generate()
+      refute Accountable.user_by_id(id)
     end
   end
 
@@ -56,8 +61,21 @@ defmodule AccountableTest do
       assert {:ok, %User{id: ^user_id}} = Accountable.user_by_token(token)
     end
 
-    test "fails with invalid token" do
+    test "error tuple with invalid token" do
       assert {:error, _} = Accountable.user_by_token("token")
+    end
+  end
+
+  describe "put_password_hash/1" do
+    test "nullify password and add hash" do
+      attrs = %{password: "my password"} |> Accountable.put_password_hash()
+
+      assert %{password: nil, password_hash: _} = attrs
+    end
+
+    test "pass through map without password" do
+      attrs = %{random: "value"}
+      assert Accountable.put_password_hash(attrs) == attrs
     end
   end
 end

@@ -8,7 +8,13 @@ defmodule Accountable.Guardian do
 
   def resource_from_claims(claims) do
     id = claims["sub"]
-    user = Accountable.user_by_id(id)
-    {:ok, user}
+
+    case Accountable.user_by_id(id) do
+      nil ->
+        {:error, "User not found"}
+
+      user ->
+        {:ok, user}
+    end
   end
 end
