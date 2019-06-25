@@ -25,8 +25,13 @@ defmodule Accountable.Context do
   end
 
   def get_user_from_token(token) do
-    {:ok, user} = Accountable.user_by_token(token)
-    user
+    case Accountable.user_by_token(token) do
+      {:ok, user} ->
+        user
+
+      _ ->
+        nil
+    end
   end
 
   def get_user(conn), do: conn |> get_token() |> get_user_from_token()
