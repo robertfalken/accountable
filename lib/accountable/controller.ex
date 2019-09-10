@@ -8,7 +8,7 @@ defmodule Accountable.Controller do
          {:ok, user} <- Accountable.user_by_credentials(email, password),
          {:ok, token} <- Accountable.token_for_user(user) do
       conn
-      |> put_resp_cookie("AccessToken", token)
+      |> put_resp_cookie("Authentication", "Bearer " <> token)
       |> send_resp(:no_content, "")
     else
       _ ->

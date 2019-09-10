@@ -4,12 +4,11 @@ defmodule Accountable do
   """
 
   @supported_tokens ~w(access reset_password)
-  @repo Application.get_env(:accountable, :ecto_repo)
   @user_schema Application.get_env(:accountable, :user_schema, Accountable.User)
 
   @spec user_by_credentials(String.t(), String.t()) :: {:ok, struct}
   def user_by_credentials(email, password) do
-    case @repo.get_by!(@user_schema, email: email) do
+    case repo.get_by!(@user_schema, email: email) do
       %{password_hash: nil} ->
         {:error, "Authentication disabled"}
 
@@ -18,12 +17,12 @@ defmodule Accountable do
     end
   end
 
-  def user_by_id(id), do: @repo.get(@user_schema, id)
+  def user_by_id(id), do: repo.get(@user_schema, id)
 
   def create_user(attributes) do
     attributes
     |> user_changeset()
-    |> @repo.insert()
+    |> repo.insert()
   end
 
   defp user_changeset(attributes) do
@@ -34,7 +33,7 @@ defmodule Accountable do
   @spec token_for_user(struct, String.t()) :: {atom, String.t()}
   def token_for_user(user, type \\ "access") do
     with true <- Enum.member?(@supported_tokens, type),
-         {:ok, token, _claims} <- Accountable.Guardian.encode_and_sign(user, %{typ: type}) do
+         {:ok, token, _claims} <- Accountable.Guardian.encode_and_sign(user, claims) do
       {:ok, token}
     else
       _ ->
@@ -58,4 +57,19 @@ defmodule Accountable do
   end
 
   def put_password_hash(attrs), do: attrs
+
+  def repo, do: Application.get_env(:accountable, :ecto_repo)
+
+  def claims() do
+    %{
+      "typ" => "access",
+      "https://hasura.io/jwt/claims": %{
+        "x-hasura-allowed-roles": ["user"],
+        "x-hasura-default-role": "user",
+        "x-hasura-user-id": "1234567890",
+        "x-hasura-org-id": "123",
+        "x-hasura-custom": "custom-value"
+      }
+    }
+  end
 end
