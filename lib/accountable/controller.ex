@@ -8,8 +8,9 @@ defmodule Accountable.Controller do
          {:ok, user} <- Accountable.user_by_credentials(email, password),
          {:ok, token} <- Accountable.token_for_user(user) do
       conn
-      |> put_resp_cookie("Authentication", "Bearer " <> token)
-      |> send_resp(:no_content, "")
+      |> put_resp_cookie("AccessToken", token)
+      |> put_resp_content_type("application/json")
+      |> send_resp(200, ~s({"accessToken": "#{token}"}))
     else
       _ ->
         send_error_response(conn)
@@ -22,7 +23,8 @@ defmodule Accountable.Controller do
          {:ok, token} <- Accountable.token_for_user(user) do
       conn
       |> put_resp_cookie("AccessToken", token)
-      |> send_resp(:no_content, "")
+      |> put_resp_content_type("application/json")
+      |> send_resp(200, ~s({"accessToken": "#{token}"}))
     else
       _ ->
         conn
@@ -34,7 +36,7 @@ defmodule Accountable.Controller do
   def call(conn, :logout) do
     conn
     |> delete_resp_cookie("AccessToken")
-    |> send_resp(204, "")
+    |> send_resp(200, "{}")
   end
 
   defp send_error_response(conn) do

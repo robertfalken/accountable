@@ -15,8 +15,8 @@ defmodule Accountable.Plugs.RouterTest do
         conn(:post, "/authenticate", %{email: "me@example.com", password: "pass"})
         |> Router.call([])
 
-      assert conn.status == 204
-      assert %{"AccessToken" => %{value: _}} = conn.resp_cookies
+      assert conn.status == 200
+      assert %{"AccessToken" => %{value: token}} = conn.resp_cookies
     end
 
     test "is unauthorized with invalid credentials" do
@@ -43,7 +43,7 @@ defmodule Accountable.Plugs.RouterTest do
         |> put_req_cookie("AccessToken", token)
         |> Router.call([])
 
-      assert conn.status == 204
+      assert conn.status == 200
       assert conn.resp_cookies["AccessToken"].value != token
     end
 
@@ -69,7 +69,7 @@ defmodule Accountable.Plugs.RouterTest do
         |> put_req_cookie("AccessToken", token)
         |> Router.call([])
 
-      assert conn.status == 204
+      assert conn.status == 200
       assert fetch_cookies(conn).cookies["AccessToken"] == nil
     end
   end
