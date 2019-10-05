@@ -10,7 +10,7 @@ defmodule Accountable.Controller do
       conn
       |> put_resp_cookie("AccessToken", token)
       |> put_resp_content_type("application/json")
-      |> send_resp(200, ~s({"accessToken": "#{token}"}))
+      |> send_resp(200, ~s({"accessToken": "#{token}", "userId": "#{user.id}"}))
     else
       _ ->
         send_error_response(conn)
@@ -24,7 +24,7 @@ defmodule Accountable.Controller do
       conn
       |> put_resp_cookie("AccessToken", token)
       |> put_resp_content_type("application/json")
-      |> send_resp(200, ~s({"accessToken": "#{token}"}))
+      |> send_resp(200, ~s({"accessToken": "#{token}", "userId": "#{user.id}"}))
     else
       _ ->
         conn

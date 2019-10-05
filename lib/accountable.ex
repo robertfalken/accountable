@@ -32,7 +32,7 @@ defmodule Accountable do
   @spec token_for_user(struct, String.t()) :: {atom, String.t()}
   def token_for_user(user, type \\ "access") do
     with true <- Enum.member?(@supported_tokens, type),
-         {:ok, token, _claims} <- Accountable.Guardian.encode_and_sign(user, claims) do
+         {:ok, token, _claims} <- claims(user) do
       {:ok, token}
     else
       _ ->
@@ -60,16 +60,17 @@ defmodule Accountable do
   def repo, do: Application.get_env(:accountable, :ecto_repo)
   def user_schema, do: Application.get_env(:accountable, :user_schema, Accountable.User)
 
-  def claims() do
-    %{
-      "typ" => "access",
-      "https://hasura.io/jwt/claims": %{
-        "x-hasura-allowed-roles": ["user"],
-        "x-hasura-default-role": "user",
-        "x-hasura-user-id": "1234567890",
-        "x-hasura-org-id": "123",
-        "x-hasura-custom": "custom-value"
+  def claims(user) do
+    claims_fn = Application.get_env(:accountable, :claims, &default_claims/1)
+    claims_fn.(user)
+  end
+
+  def default_claims(user) do
+    Accountable.Guardian.encode_and_sign(
+      user,
+      %{
+        "typ" => "access"
       }
-    }
+    )
   end
 end
