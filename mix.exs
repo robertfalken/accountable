@@ -33,11 +33,12 @@ defmodule Accountable.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:poison, "~> 3.1"},
       {:guardian, "~> 1.0"},
-      {:dialyxir, "~> 0.4", only: :test},
-      {:ecto_sql, "~> 3.0", only: :test},
+      {:ecto_sql, "~> 3.2"},
       {:postgrex, ">= 0.0.0", only: :test},
+      {:dialyxir, "~> 0.4", only: :test},
       {:ex_machina, "~> 2.3", only: :test},
-      {:absinthe_plug, "~> 1.4", only: :test}
+      {:absinthe_plug, "~> 1.4", only: :test},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end
 
