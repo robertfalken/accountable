@@ -56,6 +56,27 @@ defmodule Accountable.Plugs.RouterTest do
       assert conn.status == 401
       assert fetch_cookies(conn).cookies["AccessToken"] == nil
     end
+
+    test "clears expired token" do
+      user = insert(:user)
+
+      {:ok, token, claims} =
+        Accountable.Guardian.encode_and_sign(
+          user,
+          %{
+            "typ" => "access"
+          },
+          ttl: {-1, :minute}
+        )
+
+      conn =
+        conn(:post, "/refresh", %{})
+        |> put_req_cookie("AccessToken", token)
+        |> Router.call([])
+
+      assert conn.status == 401
+      assert fetch_cookies(conn).cookies["AccessToken"] == nil
+    end
   end
 
   describe "/logout" do
